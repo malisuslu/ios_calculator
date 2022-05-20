@@ -87,6 +87,10 @@ body {
     opacity: 50%;
 }
 
+.active {
+    opacity: 50%;
+}
+
 footer {
     font-size: 30%;
     position: absolute;

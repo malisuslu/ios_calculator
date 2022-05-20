@@ -66,6 +66,13 @@ onkeydown = function(e) {
 document.querySelectorAll('.main-body > div').forEach(function(elem) {
 
     elem.onclick = function(e) {
+
+        e.target.classList.add('active'); 
+        setTimeout(function() {
+            e.target.classList.remove('active');
+        }
+        , 100);
+
         let last_char = display.textContent[display.textContent.length - 1];
 
         if (e.target == plus || e.target == minus || e.target == multiply || e.target == divide) {
