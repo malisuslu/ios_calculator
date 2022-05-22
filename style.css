@@ -62,14 +62,18 @@ body {
 
 .display {
     grid-area: span 2 / span 4;
-    background-color: #333;
+    background-color: black;
     width: 415px;
     height: 120px;
-    border-radius: 50px;
-    text-align: left;
+    margin-top: 80px;
+    text-align: right;
+    padding-top: 10px;
     line-height: 100px;
-    padding: 0 35px;
     line-height: 120px;
+    font-size: 120px;
+    font-weight: thin;
+    word-wrap: break-word;
+    overflow: hidden;
 }
 
 .zero {
@@ -106,5 +110,6 @@ footer {
 @media screen and (max-width: 550px) {
     .main-body {
         transform: scale(0.6);
+        transform-origin: top center;
     }
 }
