@@ -128,21 +128,30 @@ document.querySelectorAll('.main-body > div:not(.display)').forEach(function(ele
                 result = result + e.target.textContent;
 
             } else if (result.toString().includes('+') || result.toString().includes('-') || result.toString().includes('x') || result.toString().includes('÷')) {
-                result = eval(result.toString().replace(/x/g, "*").replace(/÷/g, "/"));
-                display.textContent = parseFloat(result.toFixed(5));
-                result = result + e.target.textContent;   
+                if (result.toString()[0] == '-') {
+                    result = result + e.target.textContent;
+                } else {
+                    result = eval(result.toString().replace(/x/g, "*").replace(/÷/g, "/"));
+                    display.textContent = parseFloat(result.toFixed(5));
+                    result = result + e.target.textContent;   
+                }
 
             } else {
-            result = result + e.target.textContent;
+                result = result + e.target.textContent;
             }
+
             operator = e.target.textContent;
 
         } else if (e.target.classList.contains('number')) {
             
-            if(result.includes('+') || result.includes('-') || result.includes('x') || result.includes('÷')) {
+            if(result.toString().includes('+') || result.toString().includes('-') || result.toString().includes('x') || result.toString().includes('÷')) {
+                if (result.toString()[0] == '-') {
+                    result = result + e.target.textContent;
+                    display.textContent = result.slice(result.lastIndexOf(operator)+1, result.length);
+                } else {
                 result = result + e.target.textContent;
                 display.textContent = result.slice(result.indexOf(operator)+1, result.length);
-
+                }
             } else if(isOver) { 
                 result = '';
                 isOver = false;
@@ -172,7 +181,8 @@ document.querySelectorAll('.main-body > div:not(.display)').forEach(function(ele
         }
         
         display.textContent = display.textContent.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        
+    
+    holdButton();
     displaySize();
     console.log(result);
     }
@@ -189,6 +199,30 @@ function displaySize() {
         display.style.fontSize = displayHeight + 'px';
     } else {
         display.style.fontSize = fontSize + 'px';
+    }
+}
+
+function holdButton(e) {
+    if (operator != '+' && operator != '-' && operator != 'x' && operator != '÷') {
+        document.querySelectorAll('.main').forEach(function(elem) { 
+            elem.style.opacity = '1';
+        });
+    } else if(operator == '+') {
+    document.querySelectorAll('.main').forEach(function(elem) { 
+        elem.style.opacity = '1';});
+    document.querySelector('.plus').style.opacity = '0.5';
+    } else if(operator == '-') {
+    document.querySelectorAll('.main').forEach(function(elem) { 
+        elem.style.opacity = '1';});
+    document.querySelector('.minus').style.opacity = '0.5';
+    } else if(operator == 'x') {
+    document.querySelectorAll('.main').forEach(function(elem) { 
+        elem.style.opacity = '1';});
+    document.querySelector('.multiply').style.opacity = '0.5';
+    } else if(operator == '÷') {
+    document.querySelectorAll('.main').forEach(function(elem) { 
+        elem.style.opacity = '1';});
+    document.querySelector('.divide').style.opacity = '0.5';
     }
 }
 
