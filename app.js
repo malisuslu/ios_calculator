@@ -161,35 +161,69 @@ document.querySelectorAll('.main-body > div:not(.display)').forEach(function(ele
             isOver = false;
 
         } else if (e.target.classList.contains('plusminus')) {
-            if(typeof result != 'number') {
-            result = eval(result.replaceAll(/x/g, "*").replaceAll(/÷/g, "/"));
-            result = result * -1;
-            display.textContent = result;
 
-            } else {
-            result = result * -1;
-            display.textContent = result;
-            }
+            result = result.toString();
+            console.log(operator);
 
-            operator = '';
+            if (result.length == 0) {result = '-0';}
+            else if (result == "0") {result = '-0';}
+            else if (result == "-0") {result = '0';}
+            else if (result.length > 0 && operator) { 
+                result = result.split(operator);
+                result[1][0] == '-' ? result[1] = result[1].slice(1) : result[1] = '-' + result[1];
+                result = result.join(operator).replace('--', '+');
+            } else if (!operator && result[0] == '-') { result = result.slice(1); } else { result = '-' + result; }
+
+            display.textContent = result;
             isOver = false;
 
         } else if (e.target.classList.contains('percent')) {
+            
 
-            if(typeof result != 'number') {
-            result = eval(result.replaceAll(/x/g, "*").replaceAll(/÷/g, "/"));
-            result = parseFloat(result.toFixed(10)) / 100;
-            display.textContent = result;
+            if (result.toString().includes('+') || result.toString().includes('-') || result.toString().includes('x') || result.toString().includes('÷')) {
+
+                if(result[result.length - 1] == '+' || result[result.length - 1] == '-' || result[result.length - 1] == 'x' || result[result.length - 1] == '÷') {
+                    result = result.slice(0, -1);
+                    result = parseFloat(eval(result).toFixed(10)) / 100;
+                    display.textContent = result;
+
+                } else if (result.includes('x') || result.includes('÷')) {
+                    let part2 = result.slice(result.lastIndexOf(operator)+1, result.length);
+                    part2 = parseFloat(eval(part2).toFixed(10)/100);
+                    let part1 = result.slice(0, result.toString().lastIndexOf(operator));
+                    result = part1.toString() + operator + part2.toString();
+                    console.log(result);
+                    result = eval(result.toString().replaceAll(/x/g, "*").replaceAll(/÷/g, "/"));
+                    display.textContent = result;
+
+                } else if (result.toString().includes('+') || result.toString().includes('-')) {
+                    let part2 = result.slice(result.lastIndexOf(operator)+1, result.length);
+                    part2 = parseFloat(eval(part2).toFixed(10)/100).toString();
+                    let part1 = result.slice(0, result.toString().lastIndexOf(operator));
+                    part1 = parseFloat(eval(part1).toFixed(10));
+                    let part1_percent = parseFloat((part1*part2).toFixed(10)).toString();
+                    console.log(part1_percent);        
+                    result = part1.toString() + operator + part1_percent.toString();
+                    result = result.replace('--', '+').replace('++', '-');
+                    result = eval(result.toString().replaceAll(/x/g, "*").replaceAll(/÷/g, "/"));
+                    result = parseFloat(result.toFixed(10));
+                    display.textContent = result;
+                } 
 
             } else {
-            result = parseFloat(result.toFixed(10)) / 100;
-            display.textContent = result;
+                result = eval(result.toString().replaceAll(/x/g, "*").replaceAll(/÷/g, "/"));
+                result = parseFloat(eval(result).toFixed(10)) / 100;
+                display.textContent = result;
             }
 
             operator = '';
             isOver = true;
 
         } else if (e.target.classList.contains('main')) {
+            result = result.toString();
+
+            if (result.length == '') {result = '0-';}
+
             if(result[result.length - 1] == '+' || result[result.length - 1] == '-' || result[result.length - 1] == 'x' || result[result.length - 1] == '÷') {
                 result = result.slice(0, -1);
                 result = result + e.target.textContent;
@@ -212,7 +246,7 @@ document.querySelectorAll('.main-body > div:not(.display)').forEach(function(ele
                 result = result + e.target.textContent;
 
             }
-
+            
             operator = e.target.textContent;
 
         } else if (e.target.classList.contains('number')) {
@@ -328,3 +362,4 @@ function holdButton() {
             elem.style.color = 'white';
         }
     })};
+
