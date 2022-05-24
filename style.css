@@ -45,14 +45,22 @@ body {
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    filter: brightness(1) ;
+    transition: all 0.3s ease-in-out;
 }
 
-.equal, .dot, .zero, .one, .two, .three, .four, .five, .six, .seven, .eight, .nine {
+.equal, .comma, .zero, .one, .two, .three, .four, .five, .six, .seven, .eight, .nine {
     background-color: #333;
+    transition: all 0.3s ease-in-out;
 }
 
-.plus, .minus, .multiply, .divide {
-    background-color: #F1A33C;
+.main {
+    background-color: #F09114;
+    transition: all 0.3s ease-in-out;
+}
+
+.main:hover {
+    filter: brightness(1.4);
 }
 
 .clear, .plusminus, .percent {
@@ -87,13 +95,15 @@ body {
     cursor: pointer;
 }
 
-.circle:hover, .elliptic:hover {
-    opacity: 50%;
+.circle:not(.main):hover, .elliptic:hover {
+    filter: brightness(2.5);
 }
 
 .active {
-    opacity: 50%;
+    filter: brightness(2.5);
+    transition: all 0.1s ease-in-out;
 }
+
 
 footer {
     font-size: 30%;
@@ -110,6 +120,5 @@ footer {
 @media screen and (max-width: 550px) {
     .main-body {
         transform: scale(0.6);
-        transform-origin: top center;
     }
 }
